@@ -1,0 +1,37 @@
+This is a package for GNU/Emacs that let you send HTML emails from
+Emacs, and they will look exactly as they were sent from Microsoft
+Outlook with all fancy HTML formatting that Outlook does.
+
+It works on Linux and does not use Outlook, so you no longer need a
+Windows box to be able to communicate with your co-workers who use
+Outlook.
+
+* Description
+The package provides functions to format a plain-text reply and insert
+it into HTML email with a proper "Outlook-style" quotation (i.e. whole
+email thread at the bottom).
+
+outlook.el is meant to be used together with other email packages for
+Emacs, extending their functionality. As for now, only =mu4e=
+integration is supported out-of-box, but feel free to submit a PR with
+integration to other packages (gnus, wanderlust, notmuch, etc.)
+
+* Mu4e
+To integrate outlook.el with mu4e package you have to ~(require
+'outlook-mu4e)~ and invoke ~outlook-mu4e-message-finalize~ function
+during email reply composition.
+
+It will replace message body with HTML code that you can send by =C-c
+C-c=. Note, that you can (and actually should) preview the message by
+calling ~outlook-mu4e-html-message-preview~ to view it in a
+web-browser.
+
+*This package is in beta quality, so make sure you PREVIEW the message
+ before actually sending it, to avoid sending garbage to your co-workers!*
+
+* TODO
+Several features are still in development:
+
+- [ ] support plain-text emails in Outlook style
+- [ ] send HTML-formatted reply using Org-mode HTML export
+- [ ] calendar support, synchronization with Org-mode
