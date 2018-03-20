@@ -28,6 +28,7 @@
 (require 'subr-x)
 
 (defun outlook-mu4e-message-finalize ()
+  (interactive)
   (let ((message (outlook-mu4e-parent-message))
         (html-body (outlook-mu4e-parent-html-body)))
 
@@ -43,6 +44,7 @@
   (outlook-html-dom-print html))
 
 (defun outlook-mu4e-html-message-preview ()
+  (interactive)
   (save-excursion
     (message-goto-body)
     (forward-line)
