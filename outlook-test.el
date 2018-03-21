@@ -3,7 +3,11 @@
 ;; Copyright (C) 2018  Andrew Savonichev
 
 ;; Author: Andrew Savonichev
+;; URL: https://github.com/asavonic/outlook.el
+;; Version: 0.1
 ;; Keywords: mail
+
+;; Package-Requires: ((emacs "24.4"))
 
 ;; This program is free software; you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by
@@ -30,12 +34,12 @@
 (defun outlook-test-all ()
   (ert t))
 
-(ert-deftest test-format-date ()
+(ert-deftest outlook-test-format-date ()
   (should (equal
            (outlook-format-date-string '(23214 50561 0))
            "Sunday, March 18, 2018 23:01")))
 
-(ert-deftest test-html-escape ()
+(ert-deftest outlook-test-html-escape ()
   (dolist (input '(("" . "")
                    ("\"" . "&quot;")
                    ("\"foo\"" . "&quot;foo&quot;")))
@@ -52,7 +56,7 @@
              (outlook--html-escape-html (car input))
              (cdr input)))))
 
-(ert-deftest test-filter-nonstandard-tags ()
+(ert-deftest outlook-test-filter-nonstandard-tags ()
   (with-temp-buffer
     (insert "<html><body><p>foo<o:p></o:p></p></body></html>")
     (outlook--html-filter-nonstandard-tags (point-min) (point-max))
@@ -60,7 +64,7 @@
              (buffer-substring (point-min) (point-max))
              "<html><body><p>foo</p></body></html>"))))
 
-(ert-deftest test-change-charset ()
+(ert-deftest outlook-test-change-charset ()
   (with-temp-buffer
     (insert "<html><head>")
     (insert "<meta http-equiv=\"Content-Type\"")
@@ -76,14 +80,15 @@
                          'content)
                "text/html; charset=UTF-8")))))
 
-(defun read-file-content (name)
+(defun outlook-test-read-file-content (name)
   (with-temp-buffer
     (insert-file-contents name)
     (buffer-string)))
 
-(ert-deftest test-quote-header ()
+(ert-deftest outlook-test-quote-header ()
   (with-temp-buffer
-    (let ((expected (read-file-content "testdata/quote-header.html")))
+    (let ((expected (outlook-test-read-file-content
+                     "testdata/quote-header.html")))
       (erase-buffer)
       (outlook-html-dom-print
        (outlook--html-create-quote-header
@@ -95,7 +100,7 @@
       (insert "\n")
       (should (equal expected (buffer-string))))))
 
-(ert-deftest test-plaintext-wrap ()
+(ert-deftest outlook-test-plaintext-wrap ()
   (let ((outlook-text-color-style "fancy-style")
         (expected "<p class=\"MsoNormal\"><span style=\"fancy-style\">Hello, world!</span></p>"))
     (with-temp-buffer
@@ -103,7 +108,7 @@
        (outlook--html-wrap-plaintext-line "Hello, world!"))
       (should (equal (buffer-string) expected)))))
 
-(ert-deftest test-plaintext-insert ()
+(ert-deftest outlook-test-plaintext-insert ()
   (with-temp-buffer
     (insert "Hey Squeeze\n\n")
     (insert "How about we start a new movie about us?\n")
@@ -113,7 +118,8 @@
     (insert "Alice")
 
     (let ((html (dom-node 'div '((class . "WordSection1"))))
-          (expected (read-file-content "testdata/plaintext-wrap.html")))
+          (expected (outlook-test-read-file-content
+                     "testdata/plaintext-wrap.html")))
 
       (outlook--html-insert-plaintext html (point-min) (point-max))
       (erase-buffer)

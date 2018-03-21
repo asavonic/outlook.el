@@ -3,7 +3,11 @@
 ;; Copyright (C) 2018  Andrew Savonichev
 
 ;; Author: Andrew Savonichev
+;; URL: https://github.com/asavonic/outlook.el
+;; Version: 0.1
 ;; Keywords: mail
+
+;; Package-Requires: ((emacs "24.4"))
 
 ;; This program is free software; you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by
@@ -22,8 +26,8 @@
 
 ;; This package provides routines to add a plain-text reply into HTML
 ;; formatted email using MS Outlook style of quotation. Integrations
-;; into Emacs mail packages (mu4e, gnus) should be provided by
-;; separate outlook-xxx.el files.
+;; into mail packages (mu4e, gnus) should be provided by separate
+;; outlook-xxx.el files.
 
 ;;; Code:
 (require 'dom)
@@ -193,19 +197,19 @@ quotation header."
     (let ((span (dom-node 'span '((lang . "EN-US")))))
       (dom-append-child par span)
 
-      (dom-append-child span (alist-get 'from message))
+      (dom-append-child span (cdr (assq 'from message)))
 
       (outlook--html-insert-quote-header-field
-       span "Sent:" (alist-get 'date message))
+       span "Sent:" (cdr (assq 'date message)))
 
       (outlook--html-insert-quote-header-field
-       span "To:" (alist-get 'to message))
+       span "To:" (cdr (assq 'to message)))
 
       (outlook--html-insert-quote-header-field
-       span "Cc:" (alist-get 'cc message))
+       span "Cc:" (cdr (assq 'cc message)))
 
       (outlook--html-insert-quote-header-field
-       span "Subject:" (alist-get 'subject message)))
+       span "Subject:" (cdr (assq 'subject message))))
 
     ;; Insert visual separator b/w quote and the actual email
     (dom-set-attribute div 'style outlook-reply-separator-style)

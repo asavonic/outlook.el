@@ -3,7 +3,11 @@
 ;; Copyright (C) 2018  Andrew Savonichev
 
 ;; Author: Andrew Savonichev
+;; URL: https://github.com/asavonic/outlook.el
+;; Version: 0.1
 ;; Keywords: mail
+
+;; Package-Requires: ((emacs "24.4"))
 
 ;; This program is free software; you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by
@@ -20,7 +24,12 @@
 
 ;;; Commentary:
 
+;; This is an integration package to use outlook.el with `mu4e' MUA
+;; package.
 ;;
+;; Use `outlook-mu4e-html-message-finalize' before sending a reply in
+;; order to format it. Run `outlook-mu4e-html-message-preview' to
+;; preview the final message before sending it.
 
 ;;; Code:
 (require 'outlook)
