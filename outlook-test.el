@@ -85,20 +85,33 @@
     (insert-file-contents name)
     (buffer-string)))
 
-(ert-deftest outlook-test-quote-header ()
+(ert-deftest outlook-test-html-quote-header ()
   (with-temp-buffer
     (let ((expected (outlook-test-read-file-content
                      "testdata/quote-header.html")))
       (erase-buffer)
       (outlook-html-dom-print
        (outlook--html-create-quote-header
-        (outlook-html-message "Alice Wheezy"
-                              "Bob Squeezy <bob.squeezy@pixar.com>"
-                              "Sam Potato <sam.potato@pixar.com>"
-                              (outlook-format-date-string '(23214 50561 0))
-                              "New Toy Story?")))
+        (outlook-message "Alice Wheezy"
+                         "Bob Squeezy <bob.squeezy@pixar.com>"
+                         "Sam Potato <sam.potato@pixar.com>"
+                         (outlook-format-date-string '(23214 50561 0))
+                         "New Toy Story?")))
       (insert "\n")
       (should (equal expected (buffer-string))))))
+
+(ert-deftest outlook-test-txt-quote-header ()
+  (with-temp-buffer
+    (let ((expected (outlook-test-read-file-content
+                     "testdata/quote-header.txt")))
+      (outlook-txt-insert-quote-header
+       (outlook-message "Alice Wheezy"
+                        "Bob Squeezy <bob.squeezy@pixar.com>"
+                        "Sam Potato <sam.potato@pixar.com>"
+                        (outlook-format-date-string '(23214 50561 0))
+                        "New Toy Story?"))
+      (should (equal (buffer-string)
+                     expected)))))
 
 (ert-deftest outlook-test-plaintext-wrap ()
   (let ((outlook-text-color-style "fancy-style")

@@ -39,11 +39,15 @@
 (defun outlook-mu4e-message-finalize ()
   (interactive)
   (let ((message (outlook-mu4e-parent-message))
-        (html-body (outlook-mu4e-parent-html-body)))
+        (html-body (outlook-mu4e-parent-html-body))
+        (txt-body (outlook-mu4e-parent-txt-body)))
 
-    (if html-body
-        (outlook-mu4e-html-message-finalize message html-body)
-      (error "Plaintext message is not supported in outlook.el yet."))))
+    (cond
+     (txt-body
+      (outlook-mu4e-txt-message-finalize message txt-body))
+     (html-body
+      (outlook-mu4e-html-message-finalize message html-body))
+     (t (error "Cannot find parent message body.")))))
 
 (defun outlook-mu4e-html-message-finalize (message html)
   (message-goto-body)
@@ -64,12 +68,13 @@
 (defun outlook-mu4e-parent-html-body ()
   (let ((html-string
          (plist-get mu4e-compose-parent-message :body-html)))
-    (with-temp-buffer
-      (insert html-string)
-      (outlook-html-read (point-min) (point-max)))))
+    (when html-string
+      (with-temp-buffer
+        (insert html-string)
+        (outlook-html-read (point-min) (point-max))))))
 
 (defun outlook-mu4e-parent-message ()
-  (outlook-html-message
+  (outlook-message
    (outlook-mu4e-format-contacts-list-no-email
     (plist-get mu4e-compose-parent-message
                :from))
@@ -103,6 +108,18 @@
                (format "%s <%s>" (car name-email) (cdr name-email)))
              contacts)
      "; ")))
+
+
+(defun outlook-mu4e-parent-txt-body ()
+  (plist-get mu4e-compose-parent-message :body-txt))
+
+(defun outlook-mu4e-txt-message-finalize (message txt)
+  (save-excursion
+    (goto-char (point-max))
+    (insert "\n\n")
+    (outlook-txt-insert-quote-header message)
+    (insert "\n")
+    (insert txt)))
 
 (provide 'outlook-mu4e)
 ;;; outlook-mu4e.el ends here

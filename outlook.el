@@ -58,7 +58,7 @@ reply insertion."
         (outlook--html-change-charset html "UTF-8")
         html))))
 
-(defun outlook-html-message (from to cc date subject)
+(defun outlook-message (from to cc date subject)
   "Create a parent message descriptor. Any arguments can be nil,
 in which case the corresponding field will be missing in
 quotation header."
@@ -254,6 +254,28 @@ quotation header."
 
 (defun outlook--html-escape-attr (str)
   (replace-regexp-in-string "\"" "&quot;" str t 'literal))
+
+(defun outlook--txt-insert-quote-header-field (field-name value)
+  (when value
+    (insert (format "%s %s\n" field-name value))))
+
+(defun outlook-txt-insert-quote-header (message)
+  (insert "-----Original Message-----\n")
+
+  (outlook--txt-insert-quote-header-field
+   "From:" (cdr (assq 'from message)))
+
+  (outlook--txt-insert-quote-header-field
+   "Sent:" (cdr (assq 'date message)))
+
+  (outlook--txt-insert-quote-header-field
+   "To:" (cdr (assq 'to message)))
+
+  (outlook--txt-insert-quote-header-field
+   "Cc:" (cdr (assq 'cc message)))
+
+  (outlook--txt-insert-quote-header-field
+   "Subject:" (cdr (assq 'subject message))))
 
 (provide 'outlook)
 ;;; outlook.el ends here
