@@ -29,9 +29,14 @@ web-browser.
 *This package is in beta quality, so make sure you PREVIEW the message
  before actually sending it, to avoid sending garbage to your co-workers!*
 
-* TODO
-Several features are still in development:
-
+* Features still in development
 - [ ] support plain-text emails in Outlook style
 - [ ] send HTML-formatted reply using Org-mode HTML export
 - [ ] calendar support, synchronization with Org-mode
+
+* Bugs
+- [ ] handle emails without names (only email) in 'from', 'to' and
+  'cc' headings (currently displayed as 'nil')
+- [ ] handle HTML emails not in outlook format (e.g. sent from other
+  HTML-capable MUA).
+- [ ] remove ugly hack around '<part type=html>' in message preview
