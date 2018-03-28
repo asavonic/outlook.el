@@ -29,10 +29,10 @@ web-browser.
 *This package is in beta quality, so make sure you PREVIEW the message
  before actually sending it, to avoid sending garbage to your co-workers!*
 
-* Features still in development
+* Features still in development (sorted by priority)
 - [X] support plain-text emails in Outlook style
-- [ ] send HTML-formatted reply using Org-mode HTML export
 - [ ] calendar support, synchronization with Org-mode
+- [ ] send HTML-formatted reply using Org-mode HTML export
 
 * Bugs
 - [ ] handle emails without names (only email) in 'from', 'to' and
