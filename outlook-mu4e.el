@@ -75,15 +75,15 @@
 
 (defun outlook-mu4e-parent-message ()
   (outlook-message
-   (outlook-mu4e-format-contacts-list-no-email
-    (plist-get mu4e-compose-parent-message
-               :from))
+   (outlook-mu4e-format-sender
+    (car (plist-get mu4e-compose-parent-message
+                    :from)))
 
-   (outlook-mu4e-format-contacts-list
+   (outlook-mu4e-format-recipients-list
     (plist-get mu4e-compose-parent-message
                :to))
 
-   (outlook-mu4e-format-contacts-list
+   (outlook-mu4e-format-recipients-list
     (plist-get mu4e-compose-parent-message
                :cc))
 
@@ -94,18 +94,15 @@
    (plist-get mu4e-compose-parent-message
               :subject)))
 
-(defun outlook-mu4e-format-contacts-list-no-email (contacts)
-  (when contacts
-    (string-join
-     (mapcar (lambda (name-email) (format "%s" (car name-email)))
-             contacts)
-     "; ")))
+(defun outlook-mu4e-format-sender (contact)
+  (when contact
+    (outlook-format-sender (car contact) (cdr contact))))
 
-(defun outlook-mu4e-format-contacts-list (contacts)
+(defun outlook-mu4e-format-recipients-list (contacts)
   (when contacts
     (string-join
      (mapcar (lambda (name-email)
-               (format "%s <%s>" (car name-email) (cdr name-email)))
+               (outlook-format-recipient (car name-email) (cdr name-email)))
              contacts)
      "; ")))
 

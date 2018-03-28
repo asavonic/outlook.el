@@ -125,6 +125,20 @@ quotation header."
   "Format date-time structure following the outlook rules."
   (format-time-string "%A, %B %d, %G %H:%M" date))
 
+(defun outlook-format-sender (name email)
+  "Returns a string to put into From: field of a quotation
+header. Usually it is just a NAME, but EMAIL is returned if NAME
+is nil."
+  (if name name email))
+
+(defun outlook-format-recipient (name email)
+  "Returns a string to put into To: or Cc: fields of a quotation
+header. Return format is 'Name Lastname <foo@email.com>' if NAME
+is non-nil, otherwise EMAIL is returned."
+  (if name
+      (format "%s <%s>" name email)
+    email))
+
 (defun outlook--html-wrap-plaintext-line (line)
   "Wrap plaintext region into ugly Microsoft-specific html tags,
   e.g. <p class=MsoNormal>."
