@@ -32,6 +32,7 @@ web-browser.
 * Features still in development (sorted by priority)
 - [X] support plain-text emails in Outlook style
 - [ ] calendar support, synchronization with Org-mode
+- [ ] compose initial email in HTML
 - [ ] send HTML-formatted reply using Org-mode HTML export
 
 * Bugs
