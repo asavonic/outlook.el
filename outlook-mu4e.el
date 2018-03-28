@@ -60,7 +60,11 @@
   (interactive)
   (save-excursion
     (message-goto-body)
-    (forward-line)
+
+    (when (outlook-mu4e-parent-html-body)
+      (unless (search-forward "<#part type=\"text/html\">" nil t)
+        (error "Did you call outlook-mu4e-html-message-finalize before?")))
+
     (let ((temp-file (make-temp-file "emacs-email")))
       (write-region (point) (point-max) temp-file)
       (browse-url (concat "file://" temp-file)))))
