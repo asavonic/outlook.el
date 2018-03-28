@@ -40,3 +40,4 @@ web-browser.
 - [ ] handle HTML emails not in outlook format (e.g. sent from other
   HTML-capable MUA).
 - [ ] remove ugly hack around '<part type=html>' in message preview
+- [ ] embedded images are lost? (not confirmed)
