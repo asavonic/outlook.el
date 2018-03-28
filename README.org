@@ -41,3 +41,6 @@ web-browser.
   HTML-capable MUA).
 - [X] remove ugly hack around '<part type=html>' in message preview
 - [ ] embedded images are lost? (not confirmed)
+
+* Screenshot
+[[./doc/screenshot.png]]
