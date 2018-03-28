@@ -30,7 +30,7 @@ web-browser.
  before actually sending it, to avoid sending garbage to your co-workers!*
 
 * Features still in development
-- [ ] support plain-text emails in Outlook style
+- [X] support plain-text emails in Outlook style
 - [ ] send HTML-formatted reply using Org-mode HTML export
 - [ ] calendar support, synchronization with Org-mode
 
