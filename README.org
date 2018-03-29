@@ -8,6 +8,11 @@ It works on Linux and does not use Outlook, so you no longer need a
 Windows box to be able to communicate with your co-workers who use
 Outlook.
 
+* Requirements
+- GNU/Emacs 25.3 compiled with libxml2 (other versions are not tested)
+- [[https://github.com/djcb/mu][mu4e]] package (can be installed from your distribution package
+  manager)
+
 * Description
 The package provides functions to format a plain-text reply and insert
 it into HTML email with a proper "Outlook-style" quotation (i.e. whole
