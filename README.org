@@ -1,3 +1,5 @@
+[[http://melpa.org/#/outlook][http://melpa.org/packages/outlook-badge.svg]]
+
 This is a package for GNU/Emacs that let you send HTML emails from
 Emacs, and they will look exactly as they were sent from Microsoft
 Outlook with all fancy HTML formatting that Outlook does.
