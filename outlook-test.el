@@ -141,5 +141,18 @@
 
       (should (equal (buffer-string) expected)))))
 
+(ert-deftest outlook-check-organization ()
+  (let ((outlook-organization-domain-regexp "fsf\\.org")
+        (recipients-good "rms@fsf.org, info@fsf.org")
+        (recipients-bad "info@fsf.org, bill.gates@microsoft.com"))
+
+    (should (not (outlook--recipients-outside-organization recipients-good)))
+    (should (not (outlook--recipients-outside-organization "")))
+    (let ((outlook-organization-domain-regexp nil))
+      (should
+       (not (outlook--recipients-outside-organization recipients-good))))
+
+    (should (outlook--recipients-outside-organization recipients-bad))))
+
 (provide 'outlook-test)
 ;;; outlook-test.el ends here

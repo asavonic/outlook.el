@@ -44,6 +44,13 @@
   "CSS style to apply for the reply text."
   :type 'string :group 'outlook)
 
+(defcustom outlook-organization-domain-regexp nil
+  "Domain name of your current organization. If non-nil, all
+   recipient email addresses will be checked for belonging to
+   this domain and you will be queried for confirmation
+   otherwise."
+  :type 'regexp :group 'outlook)
+
 (defun outlook-html-read (start end)
   "Read HTML region into a DOM structure and prepare it for a
 reply insertion."
@@ -290,6 +297,25 @@ is non-nil, otherwise EMAIL is returned."
 
   (outlook--txt-insert-quote-header-field
    "Subject:" (cdr (assq 'subject message))))
+
+(defun outlook--recipients-outside-organization (recipients)
+  "Find addresses among RECIPIENTS that do not belong to the organization domain.
+  Should be adviced for `message-bogus-recipient-p'."
+
+  (when outlook-organization-domain-regexp
+    (let (found)
+      (mapc (lambda (address)
+              (setq address (or (cadr address) ""))
+              (unless (string-match-p
+                       (concat ".*@" outlook-organization-domain-regexp "$")
+                       address)
+                (push address found)))
+            (mail-extract-address-components recipients t))
+      found)))
+
+(eval-after-load 'message
+  (advice-add 'message-bogus-recipient-p :before-until
+              #'outlook--recipients-outside-organization))
 
 (provide 'outlook)
 ;;; outlook.el ends here
