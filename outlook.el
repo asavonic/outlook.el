@@ -184,8 +184,18 @@ is non-nil, otherwise EMAIL is returned."
 
 (defun outlook--html-find-insert-pt (html)
   (or (car (dom-by-class html "WordSection1"))
-      (dom-child-by-tag (dom-child-by-tag html 'body)
-                        'div)))
+      (outlook--dom-child-by-tag-recursive
+       html 'div)))
+
+(defun outlook--dom-child-by-tag-recursive (node tag)
+  (when (not (stringp node))
+    (or (dom-child-by-tag node tag)
+        (let ((found-recursive
+               (mapcar (lambda (child)
+                         (outlook--dom-child-by-tag-recursive child tag))
+                       (dom-children node))))
+          (setq found-recursive (delq nil found-recursive))
+          (car found-recursive)))))
 
 (defun outlook--html-insert-reply-quote (html message)
   (let ((div (outlook--html-find-insert-pt html)))

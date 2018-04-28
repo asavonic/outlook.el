@@ -154,5 +154,12 @@
 
     (should (outlook--recipients-outside-organization recipients-bad))))
 
+(ert-deftest outlook--dom-child-by-tag-recursive ()
+  (should
+   (let* ((html (dom-node 'html nil
+                          (dom-node 'body nil
+                                    (dom-node 'div)))))
+     (outlook--dom-child-by-tag-recursive html 'div))))
+
 (provide 'outlook-test)
 ;;; outlook-test.el ends here
